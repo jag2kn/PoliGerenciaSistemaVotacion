@@ -1,96 +1,55 @@
-/**
- * 
- */
-package poligran.gerencia.jpa.dao.impl;
+package poligran.gerencia.dao;
 
 import java.util.List;
-
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.FlushModeType;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 
-import poligran.gerencia.jpa.dao.CandidatoDAO;
-import poligran.gerencia.jpa.entities.Candidato;
-import poligran.gerencia.jpa.entities.Eleccion;
+import poligran.gerencia.jpa.entities.*;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-/**
- * @author Bosz2013
- *
- */
-public class DefaultCandidatoDAO implements CandidatoDAO {
-	
-	private static final String PERSISTENCE_UNIT_NAME = "GerenciaSisEleccionesEM";
-	private EntityManagerFactory entityFactory;
-	
-	private EntityManager em;
+@Repository
+public class CandidatoDaoImpl implements CandidatoDao {
+	@Autowired
+	private SessionFactory sessionFactory;
 	
 
-	public DefaultCandidatoDAO() {
-		entityFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-		em = entityFactory.createEntityManager();
-		em.setFlushMode(FlushModeType.COMMIT);
-		em.getEntityManagerFactory().getCache().evictAll();
-	}
-
-	/* (non-Javadoc)
-	 * @see poligran.gerencia.jpa.dao.CandidatoDAO#loadAll()
-	 */
-	@Override
+	@Transactional
 	public List<Candidato> loadAll() throws PersistenceException {
-		return em.createNamedQuery("candidato.loadAll", Candidato.class).getResultList();
+		Session s = sessionFactory.getCurrentSession();
+		return s.createQuery("from Candidato").list();
 	}
-
-	/* (non-Javadoc)
-	 * @see poligran.gerencia.jpa.dao.CandidatoDAO#loadByElection(poligran.gerencia.jpa.entities.Eleccion)
-	 */
-	@Override
+	@Transactional
 	public List<Candidato> loadByElection(Eleccion e)
 			throws PersistenceException {
-		
+		/*
 		Query q = em.createNamedQuery("candidato.loadByElection", Candidato.class);
 		q.setParameter("idEleccion", e.getIdEleccion());
-		return q.getResultList();
+		return q.getResultList();*/
+		Session s = sessionFactory.getCurrentSession();
+		Query q = s.getNamedQuery("candidato.loadByElection");
+		//ToDo: falta pasar el parametro e
+		return q.list();
 	}
-
-	/* (non-Javadoc)
-	 * @see poligran.gerencia.jpa.dao.CandidatoDAO#getCandidato(int)
-	 */
-	@Override
+	@Transactional
 	public Candidato getCandidato(int id) throws PersistenceException {
-		return em.find(Candidato.class, id);
+		Session s = sessionFactory.getCurrentSession();
+		Query q = s.createQuery("from Candidato where id = :id");
+		q.setParameter("id", id);
+		return (Candidato) q.list().get(0);
 	}
-
-	/* (non-Javadoc)
-	 * @see poligran.gerencia.jpa.dao.CandidatoDAO#registrarCandidato(poligran.gerencia.jpa.entities.Candidato)
-	 */
-	@Override
-	public void registrarCandidato(Candidato c) throws PersistenceException {
-		em.getTransaction().begin();
-		em.persist(c);
-		em.flush();
-		em.getTransaction().commit();
+	@Transactional
+	public void registrarCandidato(Candidato e) throws PersistenceException {
+		Session s = sessionFactory.getCurrentSession();
+		s.save(e);
 	}
-
-	/* (non-Javadoc)
-	 * @see poligran.gerencia.jpa.dao.CandidatoDAO#actualizarCandidato(poligran.gerencia.jpa.entities.Candidato)
-	 */
-	@Override
-	public void actualizarCandidato(Candidato c) throws PersistenceException {
-		em.getTransaction().begin();
-		em.merge(c);
-		em.flush();
-		em.getTransaction().commit();
+	@Transactional
+	public void actualizarCandidato(Candidato e) throws PersistenceException {
+		Session s = sessionFactory.getCurrentSession();
+		s.update(e);
 	}
-	
-	public EntityManager getEm() {
-		return em;
-	}
-
-	public void setEm(EntityManager em) {
-		this.em = em;
-	}
-
 }
