@@ -1,0 +1,10 @@
+
+Compilar:
+
+mvn compile
+
+
+Correr:
+
+mvn jetty:run
+
