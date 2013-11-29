@@ -35,8 +35,10 @@ public class Eleccion {
 	@Basic(optional=false)
 	private Integer idEleccion;
 	
+	/*
 	@Column
 	private Date fechaNaciemto;
+	*/
 	
 	@Column
 	private String nombre;
@@ -56,14 +58,14 @@ public class Eleccion {
 	public void setIdEleccion(Integer id) {
 		this.idEleccion = id;
 	}
-
+	/*
 	public Date getFechaNaciemto() {
 		return fechaNaciemto;
 	}
 
 	public void setFechaNaciemto(Date fechaNaciemto) {
 		this.fechaNaciemto = fechaNaciemto;
-	}
+	}*/
 
 	public String getNombre() {
 		return nombre;
