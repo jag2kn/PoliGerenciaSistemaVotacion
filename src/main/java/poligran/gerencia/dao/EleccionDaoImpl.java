@@ -1,10 +1,13 @@
 package poligran.gerencia.dao;
 
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
 import poligran.gerencia.jpa.entities.*;
+
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,6 +24,7 @@ public class EleccionDaoImpl implements EleccionDao {
 	@Transactional
 	public List<Eleccion> loadAll() throws PersistenceException {
 		Session s = sessionFactory.getCurrentSession();
+		s.beginTransaction();
 		return s.createQuery("from Eleccion").list();
 	}
 	@Transactional

@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,14 +14,18 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
-@Entity
+/*
 @NamedQueries({
+
 	@NamedQuery(name="candidato.loadAll", query="SELECT c FROM Candidato c"),
 	@NamedQuery(name="candidato.loadByElection", query="SELECT c FROM Candidato c WHERE c.eleccion.idEleccion =:idEleccion")
 })
+*/
+@Entity(name="CANDIDATO")
 public class Candidato {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column
 	@Basic(optional=false)
 	private Integer numID;
@@ -29,7 +35,7 @@ public class Candidato {
 	@Column
 	private String imagen;
 	@Column
-	private Date fechaNaciemto;
+	private Date fechaNacimiento;
 	@Column
 	private Integer numeroLista;
 
@@ -61,12 +67,12 @@ public class Candidato {
 		this.imagen = imagen;
 	}
 
-	public Date getFechaNaciemto() {
-		return fechaNaciemto;
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
 	}
 
-	public void setFechaNaciemto(Date fechaNaciemto) {
-		this.fechaNaciemto = fechaNaciemto;
+	public void setFechaNacimiento(Date fechaNaciemto) {
+		this.fechaNacimiento = fechaNaciemto;
 	}
 
 	public Integer getNumeroLista() {

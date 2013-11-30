@@ -3,7 +3,6 @@
  */
 package poligran.gerencia.jpa.entities;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -23,11 +22,11 @@ import org.hibernate.annotations.NamedQuery;
 /**
  * @author Bosz2013
  *
- */
-@Entity
 @NamedQueries(
-	@NamedQuery(name="eleccion.loadAll", query="SELECT e FROM Eleccion e")
-)
+		@NamedQuery(name="eleccion.loadAll", query="SELECT e FROM Eleccion e")
+		)
+ */
+@Entity(name="ELECCION")
 public class Eleccion {
 
 	@Id

@@ -1,23 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- 	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
-        http://www.springframework.org/schema/beans     
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/context 
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
- 
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	    http://www.springframework.org/schema/tx
+	    http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+
 	<context:component-scan base-package="poligran.gerencia.controller" />
 	<context:component-scan base-package="poligran.gerencia.dao" />
 	<context:component-scan base-package="poligran.gerencia.service" />
 	<context:component-scan base-package="poligran.gerencia.jpa.entities" />
 
- 	
- 	
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
@@ -27,34 +26,44 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
-	 <bean id="propertyConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-		p:location="/WEB-INF/jdbc.properties" />
-	<bean id="dataSource"
-		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
-		p:driverClassName="${jdbc.driverClassName}"
-		p:url="${jdbc.databaseurl}" p:username="${jdbc.username}"
-		p:password="${jdbc.password}" />
-	
-	 <bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation">
-			<value>classpath:hibernate.cfg.xml</value>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
-				<prop key="hibernate.show_sql">true</prop>
-			</props>
-		</property>
-	</bean>
 
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		
-		<property name="sessionFactory" ref="sessionFactory" />
-		</bean>
- 
-	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<context:property-placeholder location="/WEB-INF/jdbc.properties" />
+
+
+   <bean id="sessionFactory" 
+    class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+      <property name="dataSource" ref="dataSource" />
+      <property name="annotatedClasses">
+            <list>
+                <value>poligran.gerencia.jpa.entities.Usuario</value>
+                <value>poligran.gerencia.jpa.entities.Eleccion</value>
+                <value>poligran.gerencia.jpa.entities.Candidato</value>
+                <value>poligran.gerencia.jpa.entities.Voto</value>
+            </list>
+        </property>
+      <property name="hibernateProperties">
+         <props>
+            <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+            <prop key="hibernate.dialect">${jdbc.dialect}</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="${jdbc.driverClassName}" />
+      <property name="url" value="${jdbc.databaseurl}" />
+      <property name="username" value="${jdbc.username}" />
+      <property name="password" value="${jdbc.password}" />
+   </bean>
+
+   <bean id="transactionManager" 
+    class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+      <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+   <bean id="persistenceExceptionTranslationPostProcessor" 
+    class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+
 </beans>

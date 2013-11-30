@@ -16,15 +16,15 @@ import org.hibernate.annotations.NamedQuery;
 /**
  * @author Bosz2013
  *
- */
-@Entity
-@IdClass(value=VotoPK.class)
 @NamedQueries({
 	@NamedQuery(name="voto.loadByCandidateElection", query="SELECT v FROM Voto v WHERE " +
 			"v.eleccion.idEleccion =:idEleccion AND v.candidato.numID =:numID"),
-	@NamedQuery(name="voto.loadByElection", query="SELECT v FROM Voto v WHERE " +
+			@NamedQuery(name="voto.loadByElection", query="SELECT v FROM Voto v WHERE " +
 					"v.eleccion.idEleccion =:idEleccion")
 })
+ */
+@Entity(name="VOTO")
+@IdClass(value=VotoPK.class)
 public class Voto {
 	
 	/*@Id
