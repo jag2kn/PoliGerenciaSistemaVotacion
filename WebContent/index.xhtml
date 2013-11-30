@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+ 
+<h:head>
+	<title>Sistema de Votaciones</title>
+</h:head>
+<h:body>
+	<h1>Escoga una Eleccion para Votar por un Candidato</h1><br/>
+ 	<div style="color:red"><h2>#{reserva.message}</h2></div>
+ 	<h:form>
+	 	<h:panelGrid>
+	 		<h2>Elecciones Registrados</h2>
+	 		<h:dataTable value="#{votacionesoBean.elecciones}" var="e">
+		 
+		  			<h:column>
+		  				<!-- column header -->
+		  				<f:facet name="header">Nombre</f:facet>
+		  				<!-- row record -->
+		  				#{e.nombre}
+		  			</h:column>
+		
+		  			<h:column>
+		  				<f:facet name="header">Descripcion</f:facet>
+		  				#{e.descripcion}
+		  			</h:column>
+		 			<h:column>
+		  				<f:facet name="header">Acciones</f:facet>
+		  				
+						
+						</h:commandLink>
+		  			</h:column>
+		    </h:dataTable> 	
+ 		</h:panelGrid>
+ 	</h:form>
+	<h:form>
+	   <!-- <p:editor value="" />  -->
+	</h:form>
+ 
+</h:body>
+</html>
